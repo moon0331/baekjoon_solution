@@ -17,7 +17,8 @@ def partition(arr, left, right):
 def quicksort(arr, left, right): # left 부터 right(포함) 까지 정렬
     if left >= right: return
     q = partition(arr, left, right) # partition 결정
-    print('partitioned', left, q-1, '|', q+1, right, '(q={})'.format(q))
+    print('partitioned', left, q-1, '|', q+1, right, 
+        '(q={})'.format(q), 'qval={}'.format(arr[q]))
     quicksort(arr, left, q-1)
     quicksort(arr, q+1, right)
 
