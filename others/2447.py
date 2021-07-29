@@ -24,4 +24,5 @@ star_map = [[0 for _ in range(N)] for _ in range(N)]
 
 star(star_map, N)
 
-print(*star_map)
+for line in star_map:
+    print(*('*' if c == 1 else ' ' for c in line))
