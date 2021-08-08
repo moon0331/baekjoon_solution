@@ -2,5 +2,8 @@ import sys
 
 N = int(sys.stdin.readline())
 M = int(sys.stdin.readline())
-text = sys.stdin.readline().strip()
+S = sys.stdin.readline().strip()
 
+for i in range(len(S)):
+    if S[i] == 'I':
+        

@@ -1,22 +1,32 @@
-N = int(input())
-M = int(input())
-S = input()
+import sys
+from collections import deque
 
-cnt = 0
-obj_s = S
-i = 0
-while 0 <= i < M:
-    i += S.find('IO'*(N-1)+'I') + 2*N - 1
-    print('startswith', i)
-    while i >= 0 and (i < M and S[i] == 'O') and (i+1 < M and S[i+1] == 'I'):
-        print(i, 'found')
-        cnt += 1
-        i += 2
-    i -= 1
+T = int(sys.stdin.readline())
 
-print(cnt)
+def D(x):
+    return 2*x % 10000
 
+def S(x):
+    return x-1 if x else 9999
 
-# i가 0에서 len(s) 사이
-# 우선 P(N-1) == 'IO'*(N-1)+'I'의 인덱스 찾고 그 크기만큼 포인터 이동 (2N-1)
-# 거기서부터 'OI' 찾기
+def L(x):
+    return x%1000*10 + x//1000
+
+def R(x):
+    return x//10 + x%10*1000
+
+for _ in range(T):
+    A, B = map(int, sys.stdin.readline().split())
+    q = deque([(A, '')])
+    visited = set()
+    while q:
+        d, op = q.popleft()
+        visited.add(d)
+        if d == B:
+            break
+        for f, newop in zip((D, S, L, R),'DSLR'):
+            val = f(d)
+            if not val in visited:
+                visited.add(val)
+                q.append((val, op+newop))
+    print(op)
