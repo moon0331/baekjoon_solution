@@ -12,14 +12,15 @@ def f(num, op): # 숫자 처리 다시해보기 (+- 버튼 누른 다음에는 �
 N = int(sys.stdin.readline())
 M = int(sys.stdin.readline())
 broken_button = set(map(int, sys.stdin.readline().split()))
-possible_button = list({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '+', '-'} - broken_button)
+full_button = list({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '+', '-'} - broken_button)
+plus_minus_button = ['+', '-']
 
 q = deque([(100, 0)])
 visited = set([100])
 
 while q:
     channel, nth = q.popleft()
-    for next_button in possible_button:
+    for next_button in full_button:
         next_channel = f(channel, next_button)  
         #print(next_channel)      
         if next_channel == N:
