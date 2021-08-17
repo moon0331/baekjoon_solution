@@ -1,30 +1,33 @@
 from collections import deque
 
-# 시간초과 -> visited set으로 변경해보기
-
-def getConnectedComponent(g):
-    visited = [False for i in range(len(g)+1)]
-    n_comp = 0
-    while all(visited[1:]) != True:
-        q = deque()
-        nonvisited = [i for i in range(1, len(visited)) if visited[i] == False]
-        q.append(nonvisited[0])
-        while q:
-            node = q.popleft()
-            if not visited[node]:
-                visited[node] = True
-                q.extend(g[node])
-        n_comp += 1
-    return n_comp
+def BFS(g, i, visited):
+    if visited[i]:
+        return 0
+    q = deque([i])
+    visited[i] = True
+    while q:
+        x = q.popleft()
+        for next_node in g[x]:
+            if not visited[next_node]:
+                q.append(next_node)
+                visited[next_node] = True
+    return 1
 
 
-N, M = map(int, input().split())
+read = __import__('sys').stdin.readline
 
-graph = {i:[] for i in range(1, N+1)}
+N, M = map(int, read().split())
+
+g = {i:set() for i in range(1, N+1)}
+visited = [False for i in range(N+1)]
 
 for _ in range(M):
-    x, y = map(int, input().split())
-    graph[x].append(y)
-    graph[y].append(x)
+    x, y = map(int, read().split())
+    g[x].add(y)
+    g[y].add(x)
 
-print(getConnectedComponent(graph))
+ans = 0
+for node in g:
+    ans += BFS(g, node, visited)
+
+print(ans)
