@@ -6,7 +6,7 @@ def solution(scoville, K):
         heapq.heappush(q, s)
     scov = 0
     cnt = 0
-    while q:
+    while len(q) > 1 and q[0] < K:
         scov = heapq.heappop(q)
         if scov >= K:
             return cnt
