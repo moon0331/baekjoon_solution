@@ -1,42 +1,40 @@
 from collections import deque
 
 def solution(bridge_length, weight, truck_weights):
-
-    def available_to_finish(bridge, bridge_len):
-        return len(bridge) == bridge_len
-
-    def available_to_on(bridge, bridge_len, w, truck_weights):
-        return len(bridge) < bridge_len and sum(bridge)+truck_weights[0] < w
-
+    truck_idx = 0
     n_finished = 0
-    n_truck = len(truck_weights)
-
-    truck_weights = deque(truck_weights+[0]) # queue화
-    bridge = deque(maxlen=bridge_length)
-    
-    
+    bridge = deque()
     t = 0
-    while n_finished < n_truck:
-        print('===================================')
+    present_weight = 0
+
+    while True:
         t += 1
-        print(t)
-        if available_to_finish(bridge, bridge_length):
-            val = bridge.popleft()
-            if val != 0:
-                print(val, 'done')
+
+        # pop truck if available
+        if len(bridge) == bridge_length:
+            popval = bridge.popleft()
+            if popval:
+                present_weight -= popval
                 n_finished += 1
-                if n_finished == n_truck:
-                    break
-        if available_to_on(bridge, bridge_length, weight, truck_weights):
-            bridge.append(truck_weights.popleft())
-            print(bridge[-1], 'on')
+
+        # push truck if avilable, else push zero
+        if truck_idx < len(truck_weights) and present_weight + truck_weights[truck_idx] <= weight:
+            next_truck = truck_weights[truck_idx]
+            bridge.append(next_truck)
+            present_weight += next_truck
+            truck_idx += 1
         else:
             bridge.append(0)
 
-        print(t, bridge, truck_weights)
+        if n_finished == len(truck_weights):
+            break
 
     return t
 
-print(solution(2, 10, [7,4,5,6]) == 8)
-print(solution(100, 100, [10]) == 101)
-print(solution(100, 100, [10]*10) == 110)
+bls = [2, 100, 100]
+weights = [10, 100, 100]
+truck_weights = [[7,4,5,6], [10], [10,10,10,10,10,10,10,10,10,10]]
+results = [8, 101, 110]
+
+for b, w, t, r in zip(bls, weights, truck_weights, results):
+    print(solution(b, w, t) == r)

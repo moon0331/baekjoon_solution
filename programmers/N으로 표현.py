@@ -1,20 +1,22 @@
-def solution(triangle):
-    dp = [[0 for _ in line] for line in triangle]
-    len_triangle = len(triangle)
-    dp[0][0] = triangle[0][0]
-    for n in range(1, len(triangle)):
-        dp[n][0] = dp[n-1][0] + triangle[n][0]
-        for k in range(1, n):
-            dp[n][k] = max(dp[n-1][k-1], dp[n-1][k]) + triangle[n][k]
-        dp[n][-1] = dp[n-1][-1] + triangle[n][-1]
-    return max(dp[-1])
+def solution(N, number):
+    if number == N:
+        return 1
 
-print(solution([[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]) == 30)
+    dp = [[]]
+    for i in range(1, 8+1):
+        tmp = []
+        for x in range(1, i):
+            tmp.extend([a+b for a in dp[x] for b in dp[i-x]])
+            tmp.extend([a-b for a in dp[x] for b in dp[i-x]])
+            tmp.extend([a*b for a in dp[x] for b in dp[i-x]])
+            tmp.extend([int(a/b) for a in dp[x] for b in dp[i-x] if a*b != 0])
+        tmp.append(int(str(N)*i))
+        if number in tmp:
+            return i
+        tmp = list(set(tmp))
+        dp.append(tmp)
 
-'''
+    return -1
 
-dp[n][0] = dp[n-1][0] + arr[n][0]
-dp[n][n] = dp[n-1][n] + arr[n][n]
-dp[n][k] = min(dp[n-1][k-1], dp[n-1][k]) + arr[n][k]
-
-'''
+print(solution(5, 12) == 4) # 4
+print(solution(2, 11) == 3) # 3
