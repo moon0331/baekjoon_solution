@@ -3,15 +3,20 @@ import sys
 N = int(sys.stdin.readline())
 T = []
 P = []
-val = []
+dp = [0 for _ in range(N+1)]
 
 for _ in range(N):
     tval, pval = map(int, sys.stdin.readline().split())
     T.append(tval)
     P.append(pval)
 
-val[0] = P[0]
+for i in reversed(range(N)):
+    if i+T[i] <= N:
+        dp[i] = max(dp[i+1], P[i] + dp[i+T[i]])
+    else:
+        dp[i] = dp[i+1]
+    print(i, P[i], T[i], dp)
 
-for i in range(1, N):
-    # DP 계산
-    P[i] = 1
+
+# print(dp)
+print(dp[0])
