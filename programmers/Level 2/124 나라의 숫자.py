@@ -1,10 +1,9 @@
 def solution(n):
-    arr = []
-    while n:
-        arr.append(n%3)
-        n = n//3
-    
-    return "".join(map(str, arr[::-1]))
+    if n <= 0:
+        return ''
+    else:
+        mod = n%3 if n%3 else 3
+        return solution((n-mod)//3) + '0124'[mod]
 
 for i in range(1, 11):
-    print(solution(i))
+    print(i, solution(i))
